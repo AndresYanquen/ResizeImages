@@ -31,8 +31,26 @@ const multerFUnction = multer({
   },
 }).single("image");
 
+const resizeAgaintsA4sheet = (processedImage, dimensions) => {
+  switch (dimensions.width) {
+    case dimensions.width > A4size.width:
+      reziseValues.width = A4size.width;
+    case dimensions.width <= A4size.width:
+      reziseValues.width = dimensions.width;
+  }
+  switch (dimensions.height) {
+    case dimensions.height > A4size.height:
+      reziseValues.height = A4size.height;
+    case dimensions.height <= A4size.height:
+      reziseValues.height = dimensions.height;
+  }
+
+  return "Hola mundo";
+};
+
 module.exports = {
   storage,
   multerFUnction,
   upload,
+  resizeAgaintsA4sheet,
 };
