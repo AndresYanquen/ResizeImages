@@ -3,6 +3,15 @@ const uuid = require("uuid").v4;
 const path = require("path");
 
 // Tamaño : 796 x 1123 A4
+const A4size = {
+  width: 796,
+  height: 1123,
+};
+
+const reziseValues = {
+  width: 0,
+  height: 0,
+};
 
 const storage = multer.diskStorage({
   destination: path.join(__dirname, "../public/uploads"),
@@ -15,7 +24,7 @@ const memoryStorage = multer.memoryStorage();
 
 const upload = multer({
   storage: memoryStorage,
-}).single("image");
+}).array("image", 4);
 
 const multerFUnction = multer({
   storage,
@@ -32,20 +41,21 @@ const multerFUnction = multer({
 }).single("image");
 
 const resizeAgaintsA4sheet = (processedImage, dimensions) => {
-  switch (dimensions.width) {
-    case dimensions.width > A4size.width:
-      reziseValues.width = A4size.width;
-    case dimensions.width <= A4size.width:
-      reziseValues.width = dimensions.width;
-  }
-  switch (dimensions.height) {
-    case dimensions.height > A4size.height:
-      reziseValues.height = A4size.height;
-    case dimensions.height <= A4size.height:
-      reziseValues.height = dimensions.height;
+  console.log(dimensions);
+  console.log(A4size);
+  if (dimensions.width > A4size.width) {
+    reziseValues.width = A4size.width;
+  } else if (dimensions.width <= A4size.width) {
+    reziseValues.width = dimensions.width;
   }
 
-  return "Hola mundo";
+  if (dimensions.height > A4size.height) {
+    reziseValues.height = A4size.height;
+  } else if (dimensions.height <= A4size.height) {
+    reziseValues.height = dimensions.height;
+  }
+
+  return reziseValues;
 };
 
 module.exports = {

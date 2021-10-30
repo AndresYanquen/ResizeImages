@@ -17,16 +17,20 @@ router.post("/upload", storageController.multerFUnction, async (req, res) => {
   console.log(dimensions.width, dimensions.height);
   const processedImage = await sharp(req.file.path).toBuffer();
   //RESIZE
-  const storageIm = storageController.resizeAgaintsA4sheet(
+  const resizeValues = storageController.resizeAgaintsA4sheet(
     processedImage,
     dimensions
   );
 
-  console.log(storageIm);
+  console.log(resizeValues);
 
-  /*   const resizeImage = sharp(processedImage).resize(800, 200, {
-    fit: "contain",
-  }); */
+  const resizeImage = sharp(processedImage).resize(
+    resizeValues.width,
+    resizeValues.height,
+    {
+      fit: "contain",
+    }
+  );
   const resizeImageBuffer = await resizeImage.toBuffer();
 
   /*
