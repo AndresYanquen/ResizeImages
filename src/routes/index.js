@@ -19,6 +19,7 @@ router.post("/upload", storageController.multerFUnction, async (req, res) => {
   const img = __dirname;
   const imagesId = [];
   const files = req.files;
+
   files.map(async (file) => {
     const id = Date.now();
     imagesId.push(id);
@@ -38,9 +39,12 @@ router.post("/upload", storageController.multerFUnction, async (req, res) => {
     const resizeImageBuffer = await resizeImage.toBuffer();
     fs.writeFileSync(`./src/public/resizeImg/${id}.jpg`, resizeImageBuffer);
   });
-  console.log(imagesId);
+
+  console.log(imagesId[0]);
+  console.log(1000, `./src/public/resizeImg/${imagesId[0]}.jpg`);
   console.log(img);
-  fs.readFile(`./src/public/resizeImg/1635557531371.jpg`, (err, content) => {
+
+  fs.readFile(`./src/public/resizeImg/${imagesId[0]}.jpg`, (err, content) => {
     if (err) {
       res.writeHead(404, { "Content-type": "text/html" });
       res.end("<h1> Image not Found </h1>");
