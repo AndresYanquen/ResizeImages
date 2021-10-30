@@ -12,6 +12,7 @@ const app = express();
 
 app.set("port", 4000);
 app.set("views", path.join(__dirname, "views"));
+console.log(100, path.join(__dirname, "public/resizeImg"));
 app.set("view engine", "ejs");
 
 app.use(require("./routes/index"));

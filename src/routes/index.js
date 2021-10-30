@@ -1,4 +1,5 @@
 const { Router } = require("express");
+const path = require("path");
 const sharp = require("sharp");
 const storageController = require("../storageController/index");
 const fs = require("fs");
@@ -12,39 +13,42 @@ router.get("/", (req, res) => {
   res.render("index");
 });
 
+router.get("/image/:filepath");
+
 router.post("/upload", storageController.multerFUnction, async (req, res) => {
-  const dimensions = sizeOf(req.file.path);
-  console.log(dimensions.width, dimensions.height);
-  const processedImage = await sharp(req.file.path).toBuffer();
-  //RESIZE
-  const resizeValues = storageController.resizeAgaintsA4sheet(
-    processedImage,
-    dimensions
-  );
-
-  console.log(resizeValues);
-
-  const resizeImage = sharp(processedImage).resize(
-    resizeValues.width,
-    resizeValues.height,
-    {
-      fit: "contain",
-    }
-  );
-  const resizeImageBuffer = await resizeImage.toBuffer();
-
-  /*
-  console.log(1, resizeImage);
-  const img = await sharp(req.file.path).toBuffer();
-  const imgTotal = await sharp(img).resize(800, 200, {
-    fit: "contain",
+  const img = __dirname;
+  const imagesId = [];
+  const files = req.files;
+  files.map(async (file) => {
+    const id = Date.now();
+    imagesId.push(id);
+    const dimensions = sizeOf(file.path);
+    const processedImage = await sharp(file.path).toBuffer();
+    const resizeValues = storageController.resizeAgaintsA4sheet(
+      processedImage,
+      dimensions
+    );
+    const resizeImage = sharp(processedImage).resize(
+      resizeValues.width,
+      resizeValues.height,
+      {
+        fit: "contain",
+      }
+    );
+    const resizeImageBuffer = await resizeImage.toBuffer();
+    fs.writeFileSync(`./src/public/resizeImg/${id}.jpg`, resizeImageBuffer);
   });
-  fs.writeFileSync("../public/resizeImg/img.jpeg", imgTotal);
- */
-  //console.log(req.file);
-
-  fs.writeFileSync("./src/public/resizeImg/prueba.jpg", resizeImageBuffer);
-  res.send("Uploaded");
+  console.log(imagesId);
+  console.log(img);
+  fs.readFile(`./src/public/resizeImg/1635557531371.jpg`, (err, content) => {
+    if (err) {
+      res.writeHead(404, { "Content-type": "text/html" });
+      res.end("<h1> Image not Found </h1>");
+    } else {
+      res.writeHead(200, { "Content-type": "image/jpg" });
+      res.end(content);
+    }
+  });
 });
 
 module.exports = router;

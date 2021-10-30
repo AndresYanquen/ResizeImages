@@ -38,7 +38,7 @@ const multerFUnction = multer({
     }
     cb("Error: Formato invalido de Imagen");
   },
-}).single("image");
+}).array("image", 14);
 
 const resizeAgaintsA4sheet = (processedImage, dimensions) => {
   console.log(dimensions);
@@ -56,6 +56,10 @@ const resizeAgaintsA4sheet = (processedImage, dimensions) => {
   }
 
   return reziseValues;
+};
+
+const getImage = async (req, res) => {
+  console.log("Imagen Obtenida");
 };
 
 module.exports = {
