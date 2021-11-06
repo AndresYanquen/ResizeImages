@@ -20,12 +20,6 @@ const storage = multer.diskStorage({
   },
 });
 
-const memoryStorage = multer.memoryStorage();
-
-const upload = multer({
-  storage: memoryStorage,
-}).array("image", 4);
-
 const multerFUnction = multer({
   storage,
   dest: path.join(__dirname, "public/uploads"),
@@ -40,9 +34,7 @@ const multerFUnction = multer({
   },
 }).array("image", 14);
 
-const resizeAgaintsA4sheet = (processedImage, dimensions) => {
-  console.log(dimensions);
-  console.log(A4size);
+const resizeAgaintsA4sheet = (dimensions) => {
   if (dimensions.width > A4size.width) {
     reziseValues.width = A4size.width;
   } else if (dimensions.width <= A4size.width) {
@@ -58,13 +50,24 @@ const resizeAgaintsA4sheet = (processedImage, dimensions) => {
   return reziseValues;
 };
 
-const getImage = async (req, res) => {
-  console.log("Imagen Obtenida");
+const getDirection = (dimensions) => {
+  let direction = "";
+
+  if (dimensions.width > dimensions.height) {
+    direction = "width";
+  } else if (dimensions.width < dimensions.height) {
+    direction = "height";
+  } else if (dimensions.width === dimensions.height) {
+    direction = "equal";
+  } else {
+    direction = "";
+  }
+  console.log(direction);
+  return direction;
 };
 
 module.exports = {
-  storage,
   multerFUnction,
-  upload,
   resizeAgaintsA4sheet,
+  getDirection,
 };
