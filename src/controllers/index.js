@@ -5,8 +5,8 @@ const storageController = require("../storageController/index");
 const fs = require("fs");
 const sizeOf = require("image-size");
 
-let direction = [];
 let dimensions;
+let direction = [];
 
 const getImage = (req, res) => {
   const filepath = req.params.filepath;
@@ -23,11 +23,11 @@ const recieveImages = async (req, res) => {
     const id = Date.now();
     imagesId.push(id);
     dimensions = sizeOf(file.path);
+    direction.push(storageController.getDirection(dimensions));
     console.log(dimensions);
     const processedImage = await sharp(file.path).toBuffer();
     const resizeValues = storageController.resizeAgaintsA4sheet(dimensions);
-    direction.push(storageController.getDirection(dimensions));
-    console.log("La dirección es : " + direction);
+
     const resizeImage = sharp(processedImage).resize(
       resizeValues.width,
       resizeValues.height,
@@ -39,13 +39,12 @@ const recieveImages = async (req, res) => {
     fs.writeFileSync(`./src/public/resizeImg/${id}.jpg`, resizeImageBuffer); */
   });
 
-  let jsonResponse = {
+  /*   let jsonResponse = {
     id: imagesId,
     visualDirection: direction,
-  };
+  }; */
   console.log(`El valor de directions es : ${direction} `);
-  console.log(jsonResponse);
-  res.status(200).send(jsonResponse);
+  res.status(200).send(direction);
   direction = [];
 };
 
