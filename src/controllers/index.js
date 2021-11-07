@@ -35,15 +35,10 @@ const recieveImages = async (req, res) => {
         fit: "contain",
       }
     );
-    /* const resizeImageBuffer = await resizeImage.toBuffer();
-    fs.writeFileSync(`./src/public/resizeImg/${id}.jpg`, resizeImageBuffer); */
+    const resizeImageBuffer = await resizeImage.toBuffer();
+    fs.writeFileSync(`./src/public/resizeImg/${id}.jpg`, resizeImageBuffer);
   });
 
-  /*   let jsonResponse = {
-    id: imagesId,
-    visualDirection: direction,
-  }; */
-  console.log(`El valor de directions es : ${direction} `);
   res.status(200).send({ id: imagesId, direction: direction });
   direction = [];
 };

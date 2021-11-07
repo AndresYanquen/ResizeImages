@@ -7,7 +7,7 @@
     "test": "jest",
     "dev": "nodemon src/index.js",
     "coverage":"jest --coverage",
-    "start": "node src/index.js"
+    "start": "nodemon src/index.js"
   },
   "author": "Andres Yanquen",
   "license": "ISC",
