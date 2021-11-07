@@ -44,7 +44,7 @@ const recieveImages = async (req, res) => {
     visualDirection: direction,
   }; */
   console.log(`El valor de directions es : ${direction} `);
-  res.status(200).send(direction);
+  res.status(200).send({ id: imagesId, direction: direction });
   direction = [];
 };
 
