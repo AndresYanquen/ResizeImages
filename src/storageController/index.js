@@ -32,7 +32,7 @@ const multerFUnction = multer({
     }
     cb("Error: Formato invalido de Imagen");
   },
-}).array("image", 14);
+}).array("image", 100);
 
 const resizeAgaintsA4sheet = (dimensions) => {
   if (dimensions.width > A4size.width) {
