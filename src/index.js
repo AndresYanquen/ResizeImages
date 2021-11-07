@@ -9,8 +9,8 @@ const storageController = require("./storageController/index");
 const storage = storageController.storage;
 
 const app = express();
-
-app.set("port", 4000);
+const port = process.env.PORT || 3000;
+app.set("port", port);
 app.set("views", path.join(__dirname, "views"));
 console.log(100, path.join(__dirname, "public/resizeImg"));
 app.set("view engine", "ejs");
